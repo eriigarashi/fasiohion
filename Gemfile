@@ -75,3 +75,8 @@ gem 'simple_calendar', '~> 2.0'
 gem 'sassc'
 
 gem 'dotenv-rails'
+gem 'cloudinary'
+gem 'activestorage-cloudinary-service'
+group :production do
+  gem 'pg'
+end
