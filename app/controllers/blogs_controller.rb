@@ -18,10 +18,7 @@ class BlogsController < ApplicationController
 
   def new
     @blog = Blog.new
-    # チェック状態があれば保持
-    if params[:blog] && params[:blog][:tag_ids].present?
-      @blog.tag_ids = params[:blog][:tag_ids].reject(&:blank?).map(&:to_i)
-    end
+    @blog.tag_ids = Array(params.dig(:blog, :tag_ids))
   
     if params[:keyword].present?
       @tags = current_user.created_tags.where("name LIKE ?", "%#{params[:keyword]}%")
@@ -29,7 +26,6 @@ class BlogsController < ApplicationController
       @tags = current_user.created_tags
     end
   end
-  
   
 
   def create
