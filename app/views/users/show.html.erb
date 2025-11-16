@@ -1,0 +1,74 @@
+<div class="body-bg"style="color: white;">
+
+  <!-- マイページの内容 -->
+<h1>マイページ</h1>
+
+<p>名前 : <%= @user.name %></p>
+<p>メールアドレス : <%= @user.email %></p>
+<p>プロフィール : <%= @user.profile %></p>
+
+<% if current_user.id == @user.id %>
+  <%= link_to "編集する", edit_user_registration_path %>
+<% end %>
+
+<% if @user.image.attached? %>
+  <%= image_tag @user.image, size: '125x100' %>
+<% end %>
+
+<hr>
+
+
+
+<h2>自分の日記</h2>
+<%= link_to '日記をかく', new_blog_path %>
+
+<%= month_calendar events: @blogs do |date, blogs_for_date| %>
+  <div class="day-head"><%= date.day %></div>
+
+  <% blogs_for_date.each do |blog| %>
+    <div class="blog-entry">
+      <% if blog.image.attached? %>
+        <%= image_tag blog.image, size: '100x100' %>
+      <% end %>
+
+      <div class="cal-actions">
+        <%= link_to "削除", blog,
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %>
+        <%= link_to "詳細", blog_path(blog) %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to "みんなのカレンダーへ", blogs_path %>
+
+</div>
+
+
+<!-- タグを検索 -->
+<h2>タグ検索</h2>
+<%= form_with url: user_path(@user), method: :get, local: true do |f| %>
+  <%= text_field_tag :keyword, params[:keyword], placeholder: "タグ名を入力" %>
+  <%= submit_tag "検索" %>
+<% end %>
+
+<!-- タグで絞り込み -->
+<%= form_with url: user_path(@user), method: :get, local: true do %>
+  <% @tags.each do |tag| %>
+    <% count = tag.blogs.where(user_id: @user.id).count %>
+    <label style="display:inline-block; margin:8px; text-align:center;">
+      <%= check_box_tag "tag_ids[#{tag.id}]", "1", params.dig(:tag_ids, tag.id.to_s) == "1" %>
+      <% if tag.image.attached? %>
+        <%= image_tag tag.image, size: "60x60", style: "display:block; margin-bottom:4px;" %>
+      <% else %>
+        <%= tag.name %>
+      <% end %>
+      <br>
+      <span style="font-size:12px; color:gray;">（≒ <%= count %> 回）</span>
+    </label>
+  <% end %>
+
+  <div style="margin-top: 10px;">
+    <%= submit_tag "絞り込み" %>
+  </div>
+<% end %>

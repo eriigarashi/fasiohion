@@ -1,0 +1,45 @@
+<div class="body-bg"style="color: white;">
+<% if @blog.image.attached? %>
+<%= image_tag @blog.image, style: "width: 150px; height: 150px; object-fit: cover; border-radius: 8px; display: block; margin-bottom: 10px;" %>
+<% end %>
+
+
+  
+
+<p id="notice"><%= notice %></p>
+
+
+
+<p><strong>Temperature:</strong>
+  <%= @blog.kion.present? ? "#{@blog.kion}°C" : "-" %>
+</p>
+
+
+
+<p><strong>Date&Time:</strong>
+  <%= @blog.start_time&.in_time_zone('Tokyo')&.strftime('%Y-%m-%d %H:%M') %>
+</p>
+
+<p><strong>Comment:</strong>
+  <%= @blog.content.present? ? @blog.content : "-" %>
+</p>
+
+
+<p><strong>Tags:</strong></p>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+  <% @blog.tags.each do |t| %>
+    <%= link_to tag_tweets_path(tag_id: t.id) do %>
+      <% if t.image.attached? %>
+        <%= image_tag t.image, size: "60x60", style: "border-radius: 8px;" %>
+      <% else %>
+        <span><%= t.name %></span> <!-- 画像がない場合のフォールバック -->
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+
+
+
+
+<%= link_to 'Back to Calendar', user_path(current_user), class: 'btn btn-secondary' %>
+</div>

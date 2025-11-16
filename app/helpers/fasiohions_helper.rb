@@ -1,0 +1,2 @@
+module FasiohionsHelper
+end

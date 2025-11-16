@@ -1,0 +1,66 @@
+<div class="body-bg">
+  <div class="page-nav" style="margin:16px 0;">
+    <%= link_to "マイページへ", user_path(current_user) %>
+  </div>
+
+  <!-- 検索フォーム（GET） -->
+<%= form_with url: new_blog_path, method: :get, local: true do %>
+  <h2>タグを検索</h2>
+  <%= text_field_tag :keyword, params[:keyword], placeholder: "タグ名を入力" %>
+
+  <!-- チェック済タグを hidden で送る -->
+  <% if params[:blog] && params[:blog][:tag_ids].present? %>
+    <% params[:blog][:tag_ids].each do |tid| %>
+      <%= hidden_field_tag "blog[tag_ids][]", tid unless tid.blank? %>
+    <% end %>
+  <% end %>
+
+  <%= submit_tag "検索" %>
+<% end %>
+
+<!-- 投稿フォーム（POST） -->
+<%= form_with model: @blog, local: true do |form| %>
+  <h2>タグを選択</h2>
+  <div class="tag-selector">
+    <% selected = @blog.tag_ids.map(&:to_s) %>
+    <% @tags.each do |tag| %>
+      <label class="tag-option">
+        <%= check_box_tag "blog[tag_ids][]", tag.id, selected.include?(tag.id.to_s), id: "tag_#{tag.id}" %>
+        <% if tag.image.attached? %>
+          <%= image_tag tag.image, class: "tag-image" %>
+        <% else %>
+          <div class="tag-name"><%= tag.name %></div>
+        <% end %>
+      </label>
+    <% end %>
+  </div>
+    <!-- 日時 -->
+    <div class="field">
+      <%= form.label :start_time, "Date&Time" %>
+      <%= form.datetime_select :start_time %>
+    </div>
+
+    <!-- 気温 -->
+    <div class="kion">
+      <%= form.label :kion, "Temperature (°C)" %>
+      <%= form.text_field :kion, value: @blog.kion, step: 0.1 %>
+    </div>
+
+    <!-- コメント -->
+    <div class="field">
+      <%= form.label :content %>
+      <%= form.text_field :content, value: @blog.content %>
+    </div>
+
+    <!-- 画像 -->
+    <div class="field">
+      <%= form.label :image %>
+      <%= form.file_field :image %>
+    </div>
+
+    <!-- 送信ボタン -->
+    <%= form.submit '送信' %>
+  <% end %>
+
+  <%= link_to "タグを編集", new_tag_path %>
+</div>

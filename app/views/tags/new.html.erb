@@ -1,0 +1,49 @@
+<div class="body-bg"style="color: white;">
+<h2>タグを新しく追加</h2>
+
+<%= form_with model: @tag do |f| %>
+  <div>
+    <%= f.label :name, "タグ名" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :image, "タグ画像" %>
+    <%= f.file_field :image %>
+  </div>
+
+  <%= f.submit "登録" %>
+<% end %>
+
+<%= link_to '日記をかく', new_blog_path, class: 'btn btn-primary' %>
+<%= link_to 'マイページへ', user_path(current_user), class: 'btn btn-secondary' %>
+
+<h2>タグを検索</h2>
+<%= form_tag search_tags_path, method: :get do %>
+  <%= text_field_tag :keyword, params[:keyword], placeholder: "タグ名を入力" %>
+  <%= submit_tag "検索" %>
+<% end %>
+
+
+<h2>登録済みタグ一覧</h2>
+
+<ul>
+<% @tags.each do |tag| %>
+    <li style="margin-bottom: 10px;">
+      <% if tag.image.attached? %>
+        <%= image_tag tag.image, size: "60x60" %>
+      <% else %>
+        <%= tag.name %>
+      <% end %>
+
+      <%= tag.name %>
+
+      <%= link_to '削除', tag_path(tag),
+                  data: { turbo_method: :delete, turbo_confirm: 'このタグを削除してもよろしいですか？' },
+                  class: 'btn btn-danger' %>
+    </li>
+  <% end %>
+<ul>
+  
+
+</div>

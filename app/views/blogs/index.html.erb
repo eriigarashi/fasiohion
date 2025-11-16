@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+<div class="body-bg"style="color: white;">
+
+<h1>みんなの日記</h1>
+<% if user_signed_in? %>
+  <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+
+
+<br>
+
+<%= link_to '日記をかく', new_blog_path %>
+
+
+<%= month_calendar events: @blogs do |date, blogs_for_date| %>
+  <div class="day-head"><%= date.day %></div>
+
+  <% blogs_for_date.each do |blog| %>
+        <% if blog.image.attached? %>
+        <%= image_tag blog.image,
+        style: "width: 100px; height: 100px; object-fit: cover; border-radius: 8px; display: block; margin: 0 auto;" %>
+        <% end %>  
+
+      <div class="cal-actions">
+        <%= link_to "削除", blog,
+              data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %>
+        <%= link_to "詳細", blog_path(blog) %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<%= form_tag({controller:"blogs",action:"index"}, method: :get) do %>
+    <% Tag.all.each do |t| %>
+      <label class="tag-item">
+        <%= check_box :tag_ids, t.name %>
+        <% if t.image.attached? %>
+          <%= image_tag t.image, size: "60x60" %>
+        <% else %>
+          <%= t.name %>  <!-- 画像が無い時は名前表示 -->
+        <% end %>
+        <span class="count">（<%= t.blogs.count %>）</span>
+      </label>
+    <% end %>
+    <%= submit_tag '検索' %>
+<% end %>
+
+<%= link_to "新しいタグを追加", new_tag_path %>
+
+
+

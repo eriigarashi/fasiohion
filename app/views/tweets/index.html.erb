@@ -1,0 +1,22 @@
+<h1>自分の題名</h1>
+<h3>一覧ページ</h3>
+<%= link_to "新規投稿へ", new_tweet_path %>
+<div class="tweets-container">
+  <% @tweets.each do |t| %>
+    <div class="tweet">
+        <% if t.image.attached? %>
+            <%= image_tag t.image, size: '250x200'%>
+        <% end %>
+    
+        <% t.tags.each do |tag| %>
+        <%= link_to tag.name, tag_tweets_path(tag_id: tag.id) %>
+    <% end %>
+       
+      <%= t.kion %>
+      <%= t.review %>
+    </div>
+  <% end %>
+</div>
+
+
+

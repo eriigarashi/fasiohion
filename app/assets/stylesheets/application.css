@@ -1,0 +1,102 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+/*
+ *= require simple_calendar
+ *= require_tree .
+ *= require_self
+ */
+
+
+ .body-bg {
+    background-color: #98C1B7;
+    color: white;
+    min-height: 100vh;
+    padding: 20px;
+  }
+ 
+  
+  body {
+    background-color: #98C1B7;
+    color: white;
+  }
+  
+  a, h1, h2, h3, p, label {
+    color: white;
+  }
+  
+  /* ボタンと入力系の白デザイン */
+  input[type="submit"],
+  button,
+  input[type="text"],
+  input[type="file"],
+  select,
+  textarea {
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  /* ホバーで少し暗く */
+  input[type="submit"]:hover,
+  button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+  }
+ /*タグのデザイン */  
+  .tag-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .tag-option {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  
+  .tag-option:hover {
+    transform: scale(1.05);
+  }
+  
+  .hidden-checkbox {
+    display: none;
+  }
+  
+  .tag-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+  
+  .hidden-checkbox:checked + .tag-image {
+    border: 2px solid white;
+    box-shadow: 0 0 10px white;
+  }
+  
+  
+
+  .simple-calendar td.today {
+    background-color: #ffe4e1 !important;
+  }
+  
+ 
+  
